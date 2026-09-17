@@ -1,41 +1,50 @@
+"use client";
+ 
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+ 
+type Trip = {
+  name: string;
+  start_date: string;
+  end_date: string;
+  base_location: string;
+};
+ 
 export default function Home() {
+  const [trip, setTrip] = useState<Trip | null>(null);
+ 
+  useEffect(() => {
+    const load = async () => {
+      const { data } = await supabase
+        .from("trips")
+        .select("*")
+        .single();
+ 
+      if (data) setTrip(data);
+    };
+    load();
+  }, []);
+ 
+  if (!trip) return <main style={{padding:24}}>Loading...</main>;
+ 
   return (
-    <main className="min-h-screen bg-[#F6F1E8] p-6">
-      <div className="mx-auto max-w-md">
-        <p className="text-xs tracking-[0.25em] text-amber-700">
-          HAR HAR MAHADEV
-        </p>
+    <main style={{padding:24}}>
+      <p style={{color:"#8B5E3C"}}>🕉 HAR HAR MAHADEV</p>
  
-        <h1 className="mt-2 text-4xl font-bold text-stone-900">
-          Kashi Yatra
-        </h1>
+      <h1>{trip.name}</h1>
  
-        <p className="mt-2 text-stone-600">
-          26 Sept – 3 Oct 2026 · Varanasi
-        </p>
+      <p>{trip.start_date} → {trip.end_date}</p>
  
-        <div className="mt-8 rounded-3xl bg-[#7A4A22] p-5 text-white">
-          <p className="text-sm opacity-80">Days to departure</p>
-          <h2 className="mt-2 text-5xl font-bold">10</h2>
-          <p className="mt-2 text-sm">7 pilgrims · Brahma Ghat</p>
-        </div>
- 
-        <div className="mt-6 grid grid-cols-2 gap-3">
-          <Card title="Pilgrims" value="7" />
-          <Card title="Rooms" value="0/7" />
-          <Card title="Taxi" value="0/7" />
-          <Card title="Alerts" value="3" />
-        </div>
+      <div style={{
+        background:"#7A4A22",
+        color:"#fff",
+        padding:20,
+        borderRadius:20,
+        marginTop:20
+      }}>
+        <h2>{trip.base_location}</h2>
+        <p>7 Pilgrims</p>
       </div>
     </main>
-  );
-}
- 
-function Card({ title, value }: { title: string; value: string }) {
-  return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm">
-      <p className="text-xs text-stone-500">{title}</p>
-      <p className="mt-1 text-2xl font-semibold">{value}</p>
-    </div>
   );
 }
