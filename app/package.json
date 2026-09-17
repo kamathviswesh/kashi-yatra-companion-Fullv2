@@ -1,5 +1,5 @@
 {
-  "name": "kashi-yatra-companion",
+  "name": "kashi-yatra",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,8 +8,8 @@
   },
   "dependencies": {
     "next": "15.5.3",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "@supabase/supabase-js": "^2.57.4"
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "@supabase/supabase-js": "^2.56.1"
   }
 }
